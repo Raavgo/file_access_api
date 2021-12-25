@@ -1,0 +1,26 @@
+name: Docker Compose Action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        node-version: [12.X]
+        
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker stack
+      run: docker-compose up -d
+    - name: Newman Action
+      uses: matt-ball/newman-action@v1.0.4
+      with: 
+        collection: postman_collection.json
+        enviroment: postman_enviroment.json

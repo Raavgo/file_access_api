@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: File Access API
+  description: An API to send and receive files from filesystem
+
+paths:
+  /rest/api/v1/file:
+    get:
+      tags:
+        - Download
+      description: Retrieves a file from the filesystem
+      parameters:
+        - in: query
+          name: file_identifier
+          required: true
+          description: id or exact filename of the file 
+          schema:
+            type: string
+          examples: 
+            filename: 
+              value: 'Document.docx'
+              summary: 'Retreive file by filename'
+            id: 
+              value: '123456789'
+              summary: 'Retreive file by id'
+
+      responses:
+        '200':
+          description: File retrieved successfully
+          content:
+            multipart/form-data::
+              schema:
+                type: string
+                format: binary
+                example: "binary stream"
+        '500':
+          description: File could not be retrieved
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Error 500: Internal Server Error - Reason'
+                
+    post:
+      tags:
+        - Upload
+      description: Creates a new file  in the filesystem
+      parameters:
+        - in: query
+          name: name
+          required: true
+          description: filename.extension
+          schema:
+            type: string
+            example: 'Document.docx'
+
+            
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+
+
+      responses:
+        '200':
+          description: File created successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: {
+                  status: ok,
+                  id: 123456789,
+                  filename: Document.docx,
+                  name: Document,
+                  extension: docx
+                }
+        '500':
+          description: File could not be created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Error 500: Internal Server Error - Reason'
+    delete:
+      tags:
+        - Delete
+      description: Removes a file specified by the id from the filesystem 
+      parameters:
+        - in: query
+          name: id
+          required: true
+          description: delete file
+          schema:
+            type: string
+            example: '1'
+        
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: {status: ok}
+          

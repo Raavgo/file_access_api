@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  title: File Access API
+  description: An API to send and receive files from filesystem
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /rest/api/v1/file:
+    get:
+      tags:
+      - Download
+      description: Retrieves a file from the filesystem
+      operationId: rest_api_v1_file_get
+      parameters:
+      - name: file_identifier
+        in: query
+        description: id or exact filename of the file
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        examples:
+          filename:
+            summary: Retreive file by filename
+            value: Document.docx
+          id:
+            summary: Retreive file by id
+            value: "123456789"
+      responses:
+        "200":
+          description: File retrieved successfully
+          content:
+            'multipart/form-data:':
+              schema:
+                type: string
+                format: binary
+                x-content-type: 'multipart/form-data:'
+        "500":
+          description: File could not be retrieved
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error 500: Internal Server Error - Reason"
+                x-content-type: text/plain
+      x-openapi-router-controller: swagger_server.controllers.download_controller
+    post:
+      tags:
+      - Upload
+      description: Creates a new file  in the filesystem
+      operationId: rest_api_v1_file_post
+      parameters:
+      - name: name
+        in: query
+        description: filename.extension
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Document.docx
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: File created successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\"status\":\"ok\",\"id\":123456789,\"filename\":\"Document.docx\"\
+                  ,\"name\":\"Document\",\"extension\":\"docx\"}"
+                x-content-type: text/plain
+        "500":
+          description: File could not be created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error 500: Internal Server Error - Reason"
+                x-content-type: text/plain
+      x-openapi-router-controller: swagger_server.controllers.upload_controller
+    delete:
+      tags:
+      - Delete
+      description: Removes a file specified by the id from the filesystem
+      operationId: rest_api_v1_file_delete
+      parameters:
+      - name: id
+        in: query
+        description: delete file
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "1"
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\"status\":\"ok\"}"
+                x-content-type: text/plain
+      x-openapi-router-controller: swagger_server.controllers.delete_controller
+components: {}
+

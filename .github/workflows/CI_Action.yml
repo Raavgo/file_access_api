@@ -44,7 +44,7 @@ jobs:
         tags: |
           raavgo/file_api:latest 
           ghcr.io/raavgo/file_api/simple:latest
-          # build on feature branches, push only on main branch
+          
         push: ${{ github.ref == 'refs/heads/main' }}
 
     - name: Image digest

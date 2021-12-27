@@ -25,8 +25,8 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-      username: ${{ secrets.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
       
     - name: Login to Github Packages
       uses: docker/login-action@v1
@@ -39,12 +39,12 @@ jobs:
       uses: docker/build-push-action@v2
       with:
       # relative path to the place where source code with Dockerfile is located
-      context: ./src
+        context: ./src
       # Note: tags has to be all lower-case
-      tags: |
-        raavgo/file_api:latest 
-        ghcr.io/raavgo/file_api/simple:latest
-        # build on feature branches, push only on main branch
+        tags: |
+          raavgo/file_api:latest 
+          ghcr.io/raavgo/file_api/simple:latest
+          # build on feature branches, push only on main branch
         push: ${{ github.ref == 'refs/heads/main' }}
 
     - name: Image digest

@@ -1,0 +1,12 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  api:
+    image: raavgo/file_api
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/var/www/files
+    links:
+      - redis
+

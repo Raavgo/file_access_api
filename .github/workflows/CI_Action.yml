@@ -49,7 +49,9 @@ jobs:
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
-    
+    - name: Pull Compose Images
+      run: docker-compose pull
+      
     - name: Build the Docker stack
       run: docker-compose up -d
       

@@ -14,4 +14,4 @@ def rest_api_v1_file_get(file_identifier):  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    return f'do some magic! {file_identifier}'

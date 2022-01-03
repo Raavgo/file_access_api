@@ -34,7 +34,6 @@ paths:
           content:
             'multipart/form-data:':
               schema:
-                type: string
                 format: binary
                 x-content-type: 'multipart/form-data:'
         "500":
@@ -65,8 +64,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
-              format: binary
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: binary
       responses:
         "200":
           description: File created successfully

@@ -58,5 +58,5 @@ jobs:
     - name: Newman Action
       uses: matt-ball/newman-action@v1.0.4
       with: 
-        collection: postman_collection.json
-        enviroment: postman_enviroment.json
+        collection: File Access API.postman_collection.json
+        enviroment: blub.postman_environment.json

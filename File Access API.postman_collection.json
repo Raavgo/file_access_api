@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "17c97488-088e-4ef9-9b56-4635a23cc81b",
+		"name": "File Access API",
+		"description": "An API to send and receive files from filesystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rest/api/v1/file",
+			"item": [
+				{
+					"name": "/rest/api/v1/file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"File got returned\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Disposition\", \"inline; filename=test_file.txt\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"File has correct size\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Length\", \"9\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/rest/api/v1/file?name=test_file.txt",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rest",
+								"api",
+								"v1",
+								"file"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test_file.txt",
+									"description": "(Required) id or exact filename of the file"
+								}
+							]
+						},
+						"description": "Retrieves a file from the filesystem"
+					},
+					"response": []
+				},
+				{
+					"name": "/rest/api/v1/file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    console.log(pm.response)\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test_file.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/rest/api/v1/file",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rest",
+								"api",
+								"v1",
+								"file"
+							]
+						},
+						"description": "Creates a new file  in the filesystem"
+					},
+					"response": []
+				},
+				{
+					"name": "/rest/api/v1/file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"File cannot be found\", function () {\r",
+									"    pm.sendRequest(\"http://127.0.0.1:5000/rest/api/v1/file?name=Test_file.txt\", function (err, response) {\r",
+									"        pm.expect(response.status, \"NOT FOUND\")\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/rest/api/v1/file?name=test_file.txt",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rest",
+								"api",
+								"v1",
+								"file"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test_file.txt",
+									"description": "(Required) delete file"
+								}
+							]
+						},
+						"description": "Removes a file specified by the id from the filesystem"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:5000",
+			"type": "string"
+		}
+	]
+}

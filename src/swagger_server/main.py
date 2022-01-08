@@ -23,7 +23,7 @@ def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            return {"status": "No file part"}, 404
+            return {"status": "No file part"}, 403
 
         file = request.files['file']
 
@@ -56,4 +56,4 @@ def delete():
 
 
 if __name__ == "__main__":
-    app.run('8080')
+    app.run(host='0.0.0.0')

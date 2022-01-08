@@ -13,6 +13,6 @@ POST /rest/api/v1/file
 GET /rest/api/v1/file
  
 ### File-Deletion:
-DELETE /rest/api/v1/file
- 
-For more detailed informations look at Swagger file.
+DELETE /rest/api/v1/file  
+  
+For more detailed informations look at the README.md in the source folder.

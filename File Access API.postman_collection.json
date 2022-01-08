@@ -17,60 +17,6 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"File got returned\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Disposition\", \"inline; filename=test_file.txt\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"File has correct size\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Length\", \"9\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response time is less than 200ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/rest/api/v1/file?name=test_file.txt",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"rest",
-								"api",
-								"v1",
-								"file"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "test_file.txt",
-									"description": "(Required) id or exact filename of the file"
-								}
-							]
-						},
-						"description": "Retrieves a file from the filesystem"
-					},
-					"response": []
-				},
-				{
-					"name": "/rest/api/v1/file",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
 									"    console.log(pm.response)\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -133,12 +79,66 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
+									"pm.test(\"File got returned\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Disposition\", \"inline; filename=test_file.txt\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"File has correct size\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Length\", \"9\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/rest/api/v1/file?name=test_file.txt",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"rest",
+								"api",
+								"v1",
+								"file"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test_file.txt",
+									"description": "(Required) id or exact filename of the file"
+								}
+							]
+						},
+						"description": "Retrieves a file from the filesystem"
+					},
+					"response": []
+				},
+				{
+					"name": "/rest/api/v1/file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
 									"pm.test(\"Response time is less than 200ms\", function () {\r",
 									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"File cannot be found\", function () {\r",
-									"    pm.sendRequest(\"http://127.0.0.1:5000/rest/api/v1/file?name=Test_file.txt\", function (err, response) {\r",
+									"    pm.sendRequest(\"http://127.0.0.1:5000/rest/api/v1/file?name=test_file.txt\", function (err, response) {\r",
 									"        pm.expect(response.status, \"NOT FOUND\")\r",
 									"    });\r",
 									"});\r",

@@ -35,11 +35,11 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GHCR_PAT }}
       
-    - name: Build image and push to Docker Hub and GitHub Container Registry
+    - name: Build File_api image and push to Docker Hub and GitHub Container Registry
       uses: docker/build-push-action@v2
       with:
       # relative path to the place where source code with Dockerfile is located
-        context: ./src
+        context: ./File_api
       # Note: tags has to be all lower-case
         tags: |
           raavgo/file_api:latest 
@@ -47,8 +47,33 @@ jobs:
           
         push: ${{ github.ref == 'refs/heads/main' }}
 
+    - name: Build Webserver image and push to Docker Hub and GitHub Container Registry
+      uses: docker/build-push-action@v2
+      with:
+        # relative path to the place where source code with Dockerfile is located
+          context: ./Webserver
+        # Note: tags has to be all lower-case
+          tags: |
+            raavgo/webserver:latest 
+            ghcr.io/webserver/webserver/simple:latest
+
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+    - name: Build Worker image and push to Docker Hub and GitHub Container Registry
+      uses: docker/build-push-action@v2
+      with:
+        # relative path to the place where source code with Dockerfile is located
+          context: ./Worker
+        # Note: tags has to be all lower-case
+          tags: |
+            raavgo/worker:latest 
+            ghcr.io/webserver/worker/simple:latest
+
+          push: ${{ github.ref == 'refs/heads/main' }}
+
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
+
     - name: Pull Compose Images
       run: docker-compose pull
       

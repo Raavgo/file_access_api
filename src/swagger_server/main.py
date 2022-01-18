@@ -2,10 +2,12 @@ import os
 
 from flask import Flask, request, render_template, send_from_directory
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
 UPLOAD_FOLDER = './files'
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "super secret key unique"
 uploads = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])

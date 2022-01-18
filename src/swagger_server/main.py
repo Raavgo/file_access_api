@@ -25,7 +25,7 @@ def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            return {"status": "No file part"}, 403
+            return {"status": "No file part"}, 409
 
         file = request.files['file']
 

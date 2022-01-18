@@ -1,0 +1,17 @@
+{
+  "name": "webserver",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Toniiboni",
+  "main": "webserver.js",
+  "scripts": {
+    "start": "node webserver.js"
+  },
+  "keywords": [
+    "super_cool"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

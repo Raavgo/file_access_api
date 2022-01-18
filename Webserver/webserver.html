@@ -15,10 +15,19 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
         var video = document.getElementById('video');
+        let photo;
+
+        let formData = new FormData();
+
+
 
             document.getElementById("snap").addEventListener("click", function() {
                 context.drawImage(video, 0, 0, 640, 480);
-                document.location.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                //document.location.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                photo = canvas.toDataURL("image/jpeg")//.replace("image/jpeg", "image/octet-stream");
+                formData.append("file", photo);
+                //http://127.0.0.1:5000/rest/api/v1/file
+                fetch('http://127.0.0.1:5000/rest/api/v1/file', {method: "POST", headers:{'Access-Control-Allow-Origin': '*'}, body: formData});
             });
 
         console.log("hello");    

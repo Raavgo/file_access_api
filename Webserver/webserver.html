@@ -5,6 +5,7 @@
 <canvas id="canvas" width="640" height="480"></canvas>
 
 <script>
+
     var video = document.getElementById('video');
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -15,19 +16,21 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
         var video = document.getElementById('video');
-        let photo;
 
         let formData = new FormData();
 
 
 
-            document.getElementById("snap").addEventListener("click", function() {
+            document.getElementById("snap").addEventListener("click", async function() {
                 context.drawImage(video, 0, 0, 640, 480);
-                //document.location.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                photo = canvas.toDataURL("image/jpeg")//.replace("image/jpeg", "image/octet-stream");
-                formData.append("file", photo);
-                //http://127.0.0.1:5000/rest/api/v1/file
-                fetch('http://127.0.0.1:5000/rest/api/v1/file', {method: "POST", headers:{'Access-Control-Allow-Origin': '*'}, body: formData});
+
+                const blob = await (await fetch(canvas.toDataURL())).blob();
+                const file = new File([blob], 'file.jpg', {type:"image/jpeg", lastModified:new Date()});
+                formData.append('file', file);
+
+                fetch('http://127.0.0.1:5000/rest/api/v1/file', {method: "POST", body: formData});
+
+
             });
 
         console.log("hello");    

@@ -1,5 +1,7 @@
 const http = require("http");
 const fs = require("fs");
+const axios = require('axios')
+
 
 
 const host = '0.0.0.0';
@@ -11,7 +13,17 @@ fs.readFile('./webserver.html', function (error, html) {
     }
     http.createServer(function(req, res) {
         if(req.url ==='/upload'){
-            res.end();
+            axios
+              .post('https://whatever.com/todos', {
+                todo: 'Buy the milk'
+              })
+              .then(res => {
+                console.log(`statusCode: ${res.status}`)
+                console.log(res)
+              })
+              .catch(error => {
+                console.error(error)
+              })
         }else {
             res.writeHeader(200, {"Content-Type": "text/html"});
             res.write(html);

@@ -5,47 +5,6 @@
 <canvas id="canvas" width="640" height="480"></canvas>
 
 <script>
-    function dataURItoBlob(dataURI) {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    var byteString = atob(dataURI.split(',')[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-    // write the bytes of the string to an ArrayBuffer
-    var ab = new ArrayBuffer(byteString.length);
-    var ia = new Uint8Array(ab);
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    //Old Code
-    //write the ArrayBuffer to a blob, and you're done
-    //var bb = new BlobBuilder();
-    //bb.append(ab);
-    //return bb.getBlob(mimeString);
-
-    //New Code
-    return new Blob([ab], {type: mimeString});
-
-
-}
-    function convertURIToImageData(URI) {
-      return new Promise(function(resolve, reject) {
-        if (URI == null) return reject();
-        var canvas = document.createElement('canvas'),
-            context = canvas.getContext('2d'),
-            image = new Image();
-        image.addEventListener('load', function() {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
-          resolve(context.getImageData(0, 0, canvas.width, canvas.height));
-        }, false);
-        image.src = URI;
-  });
-}
 
     var video = document.getElementById('video');
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -57,7 +16,6 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
         var video = document.getElementById('video');
-        let photo;
 
         let formData = new FormData();
 
@@ -65,8 +23,7 @@
 
             document.getElementById("snap").addEventListener("click", async function() {
                 context.drawImage(video, 0, 0, 640, 480);
-                //document.location.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                //photo = //.replace("image/jpeg", "image/octet-stream");
+
                 const blob = await (await fetch(canvas.toDataURL())).blob();
                 const file = new File([blob], 'file.jpg', {type:"image/jpeg", lastModified:new Date()});
                 formData.append('file', file);

@@ -5,7 +5,7 @@ const express = require('express')
 const app = express();
 const port = 8001;
 
-const apiOptions = {
+const conn_options = {
   server:     'http://api:5000',
 
   get_all:    '/rest/api/v1/file/all',
@@ -15,7 +15,7 @@ const apiOptions = {
 
 
 app.get('/generate', (req, res)=>{
-  axios.get(apiOptions.server + apiOptions.get_all)
+  axios.get(conn_options.server + conn_options.get_all)
   .then(response => {
     console.log(response.data);
   })

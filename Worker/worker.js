@@ -1,5 +1,34 @@
 var videoshow = require('videoshow')
+const axios = require('axios');
+const express = require('express')
 
+const app = express();
+const port = 8001;
+
+const apiOptions = {
+  server:     'http://api:5000',
+
+  get_all:    '/rest/api/v1/file/all',
+  api_path:   '/rest/api/v1/file'
+};
+
+
+
+app.get('/generate', (req, res)=>{
+  axios.get(apiOptions.server + apiOptions.get_all)
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+
+/*
 var images = [
   'Step 0.png',
   'Step 1.png',
@@ -33,4 +62,4 @@ videoshow(images, videoOptions)
   })
   .on('end', function (output) {
     console.error('Video created in:', output)
-  })
+  })*/

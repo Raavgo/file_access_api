@@ -6,4 +6,20 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - .:/var/www/files
+      - .:/file_api/files
+
+  worker:
+    image: raavgo/worker
+    build: .
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/worker/files
+
+  webserver:
+    image: raavgo/webserver
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/webserver/files

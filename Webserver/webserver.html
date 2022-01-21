@@ -4,6 +4,7 @@
 <input type="text" id="video_name" value="" placeholder="Enter a videoname">
 <canvas id="canvas" width="640" height="480"></canvas>
 
+
 <script>
 
     var video = document.getElementById('video');
@@ -30,37 +31,8 @@
 
                 fetch('http://127.0.0.1:5000/rest/api/v1/file', {method: "POST", body: formData});
 
-
-                //ATTENTION ERROR
-                var amqp = require('amqplib/callback_api');
-
-                amqp.connect('amqp://localhost', function(error0, connection) {
-                    if (error0) {
-                        throw error0;
-                    }
-                    connection.createChannel(function(error1, channel) {
-                        if (error1) {
-                            throw error1;
-                        }
-
-                        var queue = 'FileRepository';
-                        var msg = `${file_name}.jpg` + `;` + `${video_name}`;
-
-                        channel.assertQueue(queue, {
-                            durable: false
-                        });
-                        channel.sendToQueue(queue, Buffer.from(msg));
-
-                        console.log(" [x] Sent %s", msg);
-                    });
-                    setTimeout(function() {
-                        connection.close();
-                        process.exit(0);
-                    }, 500);
-                });
-
-
-
+                document.location.href = `http://127.0.0.1:8000/sendToQueue?file_name=${file_name}&video_name=${video_name}`
+                document.location.href = `http://127.0.0.1:8000`;
 
             });   
     }

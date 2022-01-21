@@ -55,7 +55,7 @@ jobs:
         # Note: tags has to be all lower-case
           tags: |
             raavgo/webserver:latest 
-            ghcr.io/webserver/webserver/simple:latest
+            ghcr.io/raavgo/webserver/simple:latest
 
           push: ${{ github.ref == 'refs/heads/main' }}
 
@@ -67,7 +67,7 @@ jobs:
         # Note: tags has to be all lower-case
           tags: |
             raavgo/worker:latest 
-            ghcr.io/webserver/worker/simple:latest
+            ghcr.io/raavgo/worker/simple:latest
 
           push: ${{ github.ref == 'refs/heads/main' }}
 

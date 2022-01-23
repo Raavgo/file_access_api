@@ -8,6 +8,7 @@ RUN apt-get -y update \
 RUN npm install
 RUN mkdir -p /usr/src/worker
 RUN mkdir -p /usr/src/worker/files
+RUN mkdir -p /usr/src/worker/images
 
 WORKDIR /usr/src/worker
 

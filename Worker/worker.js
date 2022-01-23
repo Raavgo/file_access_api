@@ -4,6 +4,22 @@ const amqp = require('amqplib/callback_api');
 const { response } = require('express');
 var FileReader = require('filereader');
 var filereader = new FileReader();
+const download = require('image-downloader');
+const folderName = "/usr/src/worker/images"
+
+const videoOptions = {
+  fps: 25,
+  loop: 5, // seconds
+  transition: true,
+  transitionDuration: 1, // seconds
+  videoBitrate: 1024,
+  videoCodec: 'libx264',
+  size: '640x?',
+  audioBitrate: '128k',
+  audioChannels: 2,
+  format: 'mp4',
+  pixelFormat: 'yuv420p'
+}
 
 
 var express = require('express');
@@ -39,7 +55,7 @@ app.get('/', function (req, res) {
 
               //Get all file names
               axios
-                .get(`http://127.0.0.1:5000/rest/api/v1/file/all`, {
+                .get(`http://api:5000/rest/api/v1/file/all`, {
                   responeType: 'json',
                   transformResponse: [v => v]
                 })
@@ -50,12 +66,36 @@ app.get('/', function (req, res) {
                   var obj = JSON.parse(res.data);
 
                   for(var image of Object.values(obj)){
-                    //Get images
-                    images.push(`http://127.0.0.1:5000/rest/api/v1/file?name=${image}`);
+                    //Get images and download them
+
+                    options = {
+                      url: `http://api:5000/rest/api/v1/file?name=${image}`,
+                      dest: `${folderName}/${image}`
+                    }
+
+                    download.image(options)
+                        .then(({ filename }) => {
+                          console.log('Saved to', filename)  // saved to /path/to/dest/image.jpg
+                        })
+                        .catch((err) => console.error(err))
+                    
+                        images.push(`/images/${image}`); 
                   }
-                  
-                  console.log(images);
-                  generateVideo(images);
+
+
+                  videoshow(images, videoOptions)
+                    .save(`${video_name}.mp4`)
+                    .on('start', function (command) {
+                      console.log('ffmpeg process started:', command)
+                    })
+                    .on('error', function (err, stdout, stderr) {
+                      console.error('Error:', err)
+                      console.error('ffmpeg stderr:', stderr)
+                    })
+                    .on('end', function (output) {
+                      console.error('Video created in:', output)
+                  })
+
                   console.log("help");
                 })
                 .catch(error => {
@@ -69,36 +109,9 @@ app.get('/', function (req, res) {
 });
 
 app.listen(8001, function () {
-  console.log('Example app listening on port 8000!');
+  console.log('Example app listening on port 8001!');
  });
 
-function generateVideo(images){
-  var videoOptions = {
-    fps: 25,
-    loop: 5, // seconds
-    transition: true,
-    transitionDuration: 1, // seconds
-    videoBitrate: 1024,
-    videoCodec: 'libx264',
-    size: '640x?',
-    audioBitrate: '128k',
-    audioChannels: 2,
-    format: 'mp4',
-    pixelFormat: 'yuv420p'
-  }
-  
-  videoshow(images, videoOptions)
-    .save('video.mp4')
-    .on('start', function (command) {
-      console.log('ffmpeg process started:', command)
-    })
-    .on('error', function (err, stdout, stderr) {
-      console.error('Error:', err)
-      console.error('ffmpeg stderr:', stderr)
-    })
-    .on('end', function (output) {
-      console.error('Video created in:', output)
-    })
-}
+
 
 

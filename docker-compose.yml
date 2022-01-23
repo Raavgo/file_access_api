@@ -2,10 +2,11 @@ version: "3.9"  # optional since v1.27.0
 services:
 
   rabbitmq:
-    image: rabbitmq:3.6.14-management
+    image: rabbitmq:3.8-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
+
     
 
   api:
@@ -16,6 +17,7 @@ services:
     volumes:
       - .:/file_api/files
 
+
   worker:
     image: raavgo/worker
     build: .
@@ -24,6 +26,7 @@ services:
     volumes:
       - .:/worker/files
 
+
   webserver:
     image: raavgo/webserver
     build: .
@@ -31,3 +34,5 @@ services:
       - "8000:8000"
     volumes:
       - .:/webserver/files
+
+

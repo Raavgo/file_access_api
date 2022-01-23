@@ -15,17 +15,6 @@ fs.readFile('./webserver.html', function (error, html) {
     http.createServer(function(req, res) {
         if(req.url ==='/upload'){
             console.log("hello");
-            /*axios
-              .post('https://whatever.com/todos', {
-                todo: 'Buy the milk'
-              })
-              .then(res => {
-                console.log(`statusCode: ${res.status}`)
-                console.log(res)
-              })
-              .catch(error => {
-                console.error(error)
-              })*/
         }else if (req.url.includes('/sendToQueue')){
 
           var split = req.url.split('?');
@@ -37,7 +26,7 @@ fs.readFile('./webserver.html', function (error, html) {
           var file_name = parsedURL['file_name'];
           var video_name = parsedURL['video_name'];
 
-            amqp.connect('amqp://0.0.0.0', function(error0, connection) {
+            amqp.connect('amqp://guest:guest@rabbitmq:5672', function(error0, connection) {
               if (error0) {
                 throw error0;
               }

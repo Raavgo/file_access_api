@@ -1,5 +1,13 @@
 version: "3.9"  # optional since v1.27.0
 services:
+
+  rabbitmq:
+    image: rabbitmq:3.6.14-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    
+
   api:
     image: raavgo/file_api
     build: .

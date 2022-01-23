@@ -1,68 +1,76 @@
 var videoshow = require('videoshow')
 const axios = require('axios');
-//const express = require('express')
 const amqp = require('amqplib/callback_api');
 const { response } = require('express');
 var FileReader = require('filereader');
 var filereader = new FileReader();
 
 
-amqp.connect('amqp://0.0.0.0', function(error0, connection) {
-    if (error0) {
-        throw error0;
-    }
-    connection.createChannel(function(error1, channel) {
-        if (error1) {
-            throw error1;
-        }
+var express = require('express');
+var app = express();
 
-        var queue = 'FileRepository';
+app.get('/', function (req, res) {
+    amqp.connect('amqp://guest:guest@rabbitmq:5672', function(error0, connection) {
+      if (error0) {
+          throw error0;
+      }
+      connection.createChannel(function(error1, channel) {
+          if (error1) {
+              throw error1;
+          }
 
-        channel.assertQueue(queue, {
-            durable: false
-        });
+          var queue = 'FileRepository';
 
-        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+          channel.assertQueue(queue, {
+              durable: false
+          });
 
-        channel.consume(queue, function(msg) {
-            console.log(" [x] Received %s", msg.content.toString());
+          console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
-            var message = msg.content.toString();
-            var splitted = message.split(";");
-            var file_name = splitted[0];
-            var video_name = splitted[1];
+          channel.consume(queue, function(msg) {
+              console.log(" [x] Received %s", msg.content.toString());
 
-            var images = [];
+              var message = msg.content.toString();
+              var splitted = message.split(";");
+              var file_name = splitted[0];
+              var video_name = splitted[1];
 
-            //Get all file names
-            axios
-              .get(`http://127.0.0.1:5000/rest/api/v1/file/all`, {
-                responeType: 'json',
-                transformResponse: [v => v]
-              })
-              .then(res => {
-                console.log(`statusCode: ${res.status}`)
-                console.log(`Data is: ${res.data}`)
+              var images = [];
 
-                var obj = JSON.parse(res.data);
+              //Get all file names
+              axios
+                .get(`http://127.0.0.1:5000/rest/api/v1/file/all`, {
+                  responeType: 'json',
+                  transformResponse: [v => v]
+                })
+                .then(res => {
+                  console.log(`statusCode: ${res.status}`)
+                  console.log(`Data is: ${res.data}`)
 
-                for(var image of Object.values(obj)){
-                  //Get images
-                  images.push(`http://127.0.0.1:5000/rest/api/v1/file?name=${image}`);
-                }
-                
-                console.log(images);
-                generateVideo(images);
-                console.log("help");
-              })
-              .catch(error => {
-                console.error(error)
-              })
-        }, {
-            noAck: true
-        });
-    });
+                  var obj = JSON.parse(res.data);
+
+                  for(var image of Object.values(obj)){
+                    //Get images
+                    images.push(`http://127.0.0.1:5000/rest/api/v1/file?name=${image}`);
+                  }
+                  
+                  console.log(images);
+                  generateVideo(images);
+                  console.log("help");
+                })
+                .catch(error => {
+                  console.error(error)
+                })
+          }, {
+              noAck: true
+          });
+      });
+  });
 });
+
+app.listen(8001, function () {
+  console.log('Example app listening on port 8000!');
+ });
 
 function generateVideo(images){
   var videoOptions = {

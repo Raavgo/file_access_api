@@ -9,6 +9,7 @@ RUN npm install
 RUN mkdir -p /usr/src/worker
 RUN mkdir -p /usr/src/worker/files
 RUN mkdir -p /usr/src/worker/images
+RUN mkdir -p /usr/src/worker/videos
 
 WORKDIR /usr/src/worker
 

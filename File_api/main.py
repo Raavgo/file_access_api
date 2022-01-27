@@ -64,7 +64,8 @@ def delete():
 def get_all_filenames():
     files = dict()
     for idx, file in enumerate(os.listdir(UPLOAD_FOLDER)):
-        files[f'file_{idx}'] = str(file)
+        if ((str(file)).endswith(".jpg")):
+            files[f'file_{idx}'] = str(file)
 
     return jsonify(files)
 

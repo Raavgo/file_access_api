@@ -1,11 +1,11 @@
-<h1>Hello shitty page</h1>
-
 <video id="video" width="640" height="480" autoplay></video>
-<button id="snap">Snap Photo</button>
+<button id="snap">Take photo and upload</button>
+<input type="text" id="file_name" value="" placeholder="Enter a filename">
+<input type="text" id="video_name" value="" placeholder="Enter a videoname">
 <canvas id="canvas" width="640" height="480"></canvas>
 
-<script>
 
+<script>
     var video = document.getElementById('video');
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -19,20 +19,20 @@
 
         let formData = new FormData();
 
-
-
             document.getElementById("snap").addEventListener("click", async function() {
                 context.drawImage(video, 0, 0, 640, 480);
+                var file_name = document.getElementById('file_name').value;
+                var video_name = document.getElementById('video_name').value;
 
                 const blob = await (await fetch(canvas.toDataURL())).blob();
-                const file = new File([blob], 'file.jpg', {type:"image/jpeg", lastModified:new Date()});
+                const file = new File([blob], `${file_name}.jpg`, {type:"image/jpeg", lastModified:new Date()});
                 formData.append('file', file);
 
                 fetch('http://127.0.0.1:5000/rest/api/v1/file', {method: "POST", body: formData});
 
+                document.location.href = `http://127.0.0.1:8000/sendToQueue?file_name=${file_name}&video_name=${video_name}`
+                document.location.href = `http://127.0.0.1:8000`;
 
-            });
-
-        console.log("hello");    
+            });   
     }
 </script>

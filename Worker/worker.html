@@ -1,0 +1,20 @@
+<input type="text" id="video" value="" placeholder="Enter a videoname">
+<button id="getVideo">Get the desired video</button>
+<video id="videoframe"width="640" height="480" controls></video>
+
+<script>
+    document.getElementById("getVideo").addEventListener("click", async function() {
+
+        var video_name = document.getElementById('video').value;
+        var video = document.getElementById('videoframe');
+        var source = document.createElement('source');
+    
+        source.setAttribute('src', `http://0.0.0.0:5000/rest/api/v1/file?name=${video_name}.mp4`);
+        source.setAttribute('type', 'video/mp4');
+
+        video.appendChild(source);
+        video.play();
+    
+    });
+</script>
+

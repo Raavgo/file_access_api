@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:kinetic-20220830
 RUN apt-get -y update \
     && apt-get -y install nodejs  \
     && apt-get -y install npm \

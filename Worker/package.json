@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.8.0",
-    "axios": "^0.25.0",
+    "axios": "^1.6.3",
     "express": "^4.17.2",
     "filereader": "^0.10.3",
     "image-downloader": "^4.0.3",
